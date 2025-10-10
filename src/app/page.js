@@ -8,6 +8,7 @@ import TechnicalAdvantagesSection from '../../components/TechnicalAdvantagesSect
 import Footer from '../../components/Footer';
 import InterplastSection from '../../components/InterplastSection';
 import Header from '../../components/Header';
+import RatingBar from '../../components/RatingBar';
 
 export default function Home() {
   return (
@@ -15,13 +16,13 @@ export default function Home() {
     <Header />
       <main>
         <HeroSection />
+        {/*<RatingBar />*/}
         <PillarsSection />
         <ReasonsSection />
         <ProductIntroSection />
         <ProductCatalog />
         <TechnicalAdvantagesSection />
       </main>
-      { /*<InterplastSection /> */}
       <InterplastSection /> 
       <Footer />
     </>  

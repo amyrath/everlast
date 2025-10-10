@@ -20,13 +20,13 @@ const Header = () => {
                     {/* LOGO (EMPLACEMENT D'IMAGE) */}
                     <div className="flex items-center">
                         <Link href="/" className="transition duration-300 hover:opacity-80">
-                            {/* PLACEHOLDER D'IMAGE pour "EVERLAST UPVC" */}
-                            {/* REMPLACEZ CECI par <Image src="/path/to/everlast-logo.png" ... /> */}
+                         <div className="p-1 bg-white rounded-lg shadow-lg"> 
                              <img 
                                 src="/images/everlast-logo.jpg" 
                                 alt="Everlast uPVC Windows and Doors Logo"
-                                className="h-12 w-auto" // Ajustez la taille (h-12 = 48px)
+                                className="h-15 w-auto flex-shrink-0" // Ajustez la taille (h-12 = 48px)
                             />
+                         </div>    
                         </Link>
                     </div>
 

@@ -33,7 +33,7 @@ const HeroSection = () => {
       {/* Contenu - centré au-dessus de l'overlay */}
       <div className="relative z-10 text-center px-4">
         {/* H1 : police titre, très grande */}
-        <h1 className="font-titre text-5xl md:text-7xl font-bold mb-4 animate-fade-in-up">
+        <h1 className="font-titre text-5xl md:text-7xl font-bold mb-4 animate-fade-in-up text-wiht-800">
           The Right Choice For Windows And Doors
         </h1>
         

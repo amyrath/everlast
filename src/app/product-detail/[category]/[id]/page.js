@@ -1,7 +1,7 @@
 // src/app/product-detail/[category]/[id]/page.js
 import React from 'react';
 import Image from 'next/image';
-import Link from 'next/link'; // Importation de Link pour le bouton Accueil
+import Link from 'next/link';
 
 // Base de données des produits EN ANGLAIS, synchronisée avec votre catalogue
 const PRODUCTS_DB = {
@@ -25,7 +25,7 @@ const PRODUCTS_DB = {
       specs: ["Absolute Air and Water Tightness", "Unrivaled Security", "Maximal Light Intake", "Low Maintenance", "Custom Shapes Available"],
     },
     4: {
-      name: "Everlast Asymmetrical Windows (Custom)", 
+      name: "Everlast Asymmetrical Windows", 
       image: "/images/asymm.jpg", 
       description: "We custom-build unique shapes and sizes to meet specific architectural demands. Our asymmetrical designs ensure that even the most complex openings receive the perfect uPVC solution, combining unique aesthetics with Everlast's high performance.",
       specs: ["Fully Customizable Shape/Size", "Steel Reinforcement", "Energy Efficiency Guaranteed", "Made-to-Order", "Available in various colours"],
@@ -33,7 +33,7 @@ const PRODUCTS_DB = {
   },
   doors: {
     1: { 
-      name: "Everlast Sliding Patio Doors", 
+      name: "Everlast Sliding Doors", 
       image: "/images/sliding-door.jpg", 
       description: "Our Sliding Doors seamlessly connect your indoor and outdoor living spaces. They feature large glass panels for maximum view, secure multi-lock mechanisms, and a smooth glide system, making them both beautiful and highly functional.",
       specs: ["Safety Toughened Glass", "Heavy-Duty Rail System", "Secure Multi-Lock", "Low Threshold option", "Excellent Weather Resistance"],
@@ -45,7 +45,7 @@ const PRODUCTS_DB = {
       specs: ["Dual Functionality (Tilt/Slide)", "uPVC 7-Chamber Profile", "Optimal Ventilation", "Superior Sound Insulation", "High Security Mechanism"],
     },
     3: {
-      name: "Everlast Turn Doors (Entrance/Balcony)", 
+      name: "Everlast Turn Doors", 
       image: "/images/turn-door.jpg", 
       description: "Robust and highly elegant, our Turn Doors function like traditional hinged doors, providing superior security and unmatched thermal performance. Ideal for main entrances or balcony access, they ensure a perfect seal and long-lasting operation.",
       specs: ["High Security Mechanism", "Excellent Thermal Insulation", "Durable uPVC Hinges", "Main Entrance Compatible", "Reinforced Steel Frame"],
