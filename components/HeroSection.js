@@ -15,7 +15,7 @@ const HeroSection = () => {
 
   // 2. Rendu JSX (avec les classes définies dans tailwind.config.js)
   return (
-    <section className="relative h-[90vh] flex items-center justify-center text-white overflow-hidden">
+    <section className="relative h-[90vh] flex items-center justify-center text-white overflow-hidden pt-28 md:pt-90">
       
       {/* Image de Fond avec Parallaxe */}
       <div 

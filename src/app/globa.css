@@ -1,55 +1,97 @@
+/* src/app/globals.css (VERSION FUSIONNÉE ET FINALE) */
+
+/* LE SEUL MOYEN D'INITIALISER TAILWIND DANS VOTRE PROJET */
 @import "tailwindcss";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* 1. Définition des Couleurs et Polices de Marque (Basées sur tailwind.config.js) */
-/* C'est essentiel pour que votre CSS personnalisé fonctionne avec les variables */
+/* 1. Définition des Couleurs et Variables */
 :root {
     --bleu-fonce: #0A1931;
     --rouge-action: #D93025;
     --bleu-vif: #1A73E8;
-    /* Ajoutez ici les imports Google Fonts de Montserrat et Roboto si non fait dans layout.js */
 }
 
-/* 2. Styles Personnalisés pour les Animations (utilisés dans PillarsSection.js) */
+/* 2. Styles du Body (Règles qui font revenir la taille et le fond) */
+html, body {
+  min-height: 120vh;
+  background-color: transparent;
+  background-image: url("/images/back2.png") ;
+  background-repeat: repeat;
+  background-size: 1000px 1000px;
+  background-attachment: fixed;
+  background-position: center;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  background-attachment: scroll;
+}
 
-/* Cible les cartes spécifiques */
+
+/* NOUVEAU BLOC : Pseudo-élément pour l'image de fond et l'opacité */
+html::before, body::before {
+  content: ''; /* Obligatoire pour les pseudo-éléments */
+  position: fixed; /* Maintient l'image fixe, comme votre réglage background-attachment: fixed */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  
+  /* L'image de fond est ici */
+  background-image: url("/images/back2.png");
+  background-repeat: repeat;
+  background-size: 1100px 1100px;
+  background-position: center;
+  
+  /* ************************************ */
+  /* ATTENTION : LA MAGIE SE PASSE ICI ! */
+  /* ************************************ */
+  opacity: 0.08; /* DÉFINISSEZ VOTRE NIVEAU D'OPACITÉ (Ex: 0.2 pour 20%) */
+  filter: contrast(80%) brightness(130%); 
+  z-index: -1; /* Place l'image derrière tout le contenu du site (textes, sections, etc.) */
+}
+
+section, main {
+  background-color: transparent;
+}
+
+
+/* 3. Styles Personnalisés (VOS STYLES RÉTABLIS) */
+
 .pillar-card {
-    /* Transform pour l'animation au scroll (invisible au départ) */
     opacity: 0;
     transform: translateY(20px);
 }
 
-/* Classe à ajouter par JavaScript/Librairie pour afficher les cartes */
-.pillar-card-visible { 
+.pillar-card-visible {
     opacity: 1;
     transform: translateY(0);
-    transition: all 0.5s ease-out; /* Ajout d'une transition pour l'effet d'apparition */
+    transition: all 0.5s ease-out;
 }
 
-/* Effet de Surlignement (Hover Effect) - Apparence de la bordure rouge */
 .pillar-card:hover {
     border-color: var(--rouge-action) !important;
 }
 
-/* Changer la couleur de l'icône et du titre au survol */
 .pillar-card:hover .pillar-icon {
-    color: var(--rouge-action) !important; 
+    color: var(--rouge-action) !important;
 }
 .pillar-card:hover h3 {
-    color: var(--rouge-action) !important; 
+    color: var(--rouge-action) !important;
 }
 
-/* Styles pour le bouton CTA du Hero */
 .btn-cta {
     background-color: var(--rouge-action);
 }
 .btn-cta:hover {
-    background-color: #A3281E; /* Un rouge légèrement plus foncé au survol */
+    background-color: #A3281E;
 }
 
-/* Vous devez également styliser ici les classes font-titre et font-corps */
 .font-titre {
     font-family: var(--font-montserrat) !important;
 }
@@ -57,18 +99,14 @@
     font-family: var(--font-roboto) !important;
 }
 
-body {
-    font-family: var(--font-roboto);
-}
-
 @layer base {
-  html {
-    /* Injecte les variables de police définies dans layout.js */
-    font-family: var(--font-roboto); 
-  }
+    html {
+        /* Injecte la police définie dans layout.js */
+        font-family: var(--font-roboto); 
+    }
 }
 
-/* Classe d'animation d'apparition du Hero (à ajuster ou remplacer par une librairie) */
+/* Animations */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -85,86 +123,3 @@ body {
 .delay-200 { animation-delay: 0.2s; }
 .delay-400 { animation-delay: 0.4s; }
 
-
-
-
-
-
-/* /* src/app/globals.css (VERSION FINALE, SANS CARACTÈRES CACHÉS) 
-
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-/* 1. Définition des Couleurs 
-:root {
-    --bleu-fonce: #0A1931;
-    --rouge-action: #D93025;
-    --bleu-vif: #1A73E8;
-}
-
-/* 2. Styles Personnalisés (VOS STYLES) 
-.pillar-card {
-    opacity: 0;
-    transform: translateY(20px);
-}
-
-.pillar-card-visible { 
-    opacity: 1;
-    transform: translateY(0);
-    transition: all 0.5s ease-out;
-}
-
-.pillar-card:hover {
-    border-color: var(--rouge-action) !important;
-}
-
-.pillar-card:hover .pillar-icon {
-    color: var(--rouge-action) !important; 
-}
-.pillar-card:hover h3 {
-    color: var(--rouge-action) !important; 
-}
-
-/* Styles pour le bouton CTA du Hero 
-.btn-cta {
-    background-color: var(--rouge-action);
-}
-.btn-cta:hover {
-    background-color: #A3281E;
-}
-
-/* Polices personnalisées 
-.font-titre {
-    font-family: var(--font-montserrat) !important;
-}
-.font-corps {
-    font-family: var(--font-roboto) !important;
-}
-
-body {
-    font-family: var(--font-roboto);
-}
-
-@layer base {
-  html {
-    font-family: var(--font-roboto), sans-serif; 
-  }
-}
-
-/* Classe d'animation d'apparition du Hero 
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-.animate-fade-in-up {
-    animation: fadeInUp 0.6s ease-out both;
-}
-.delay-200 { animation-delay: 0.2s; }
-.delay-400 { animation-delay: 0.4s; } -->
