@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200" preserveAspectRatio="xMinYMin meet">
+  <defs>
+    <marker id="arrow" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0 0 L6 3 L0 6 z" fill="#4b4b4b"/>
+    </marker>
+    <style type="text/css"><![CDATA[
+      .line { stroke:#4b4b4b; stroke-width:1; stroke-linecap:square; stroke-linejoin:round; fill:none; }
+      .thin { stroke:#4b4b4b; stroke-width:0.6; opacity:0.85; fill:none; }
+      .text { fill:#4b4b4b; font-family: Arial, Helvetica, sans-serif; font-size:18px; opacity:0.95; }
+      .dim { stroke:#4b4b4b; stroke-width:0.8; fill:none; }
+    ]]></style>
+  </defs>
+
+  <!-- Fragment A (Haut gauche) -->
+  <g transform="translate(60,60)">
+    <rect class="line" x="0" y="0" width="400" height="600" rx="4"/>
+    <g class="thin">
+      <rect x="12" y="12" width="376" height="72"/>
+      <rect x="12" y="96" width="180" height="180"/>
+      <rect x="208" y="96" width="180" height="180"/>
+      <rect x="12" y="288" width="376" height="180"/>
+    </g>
+    <rect class="line" x="40" y="34" width="320" height="160"/>
+    <g class="dim" marker-start="url(#arrow)" marker-end="url(#arrow)">
+      <path d="M0 630 H400"/>
+      <text x="170" y="655" class="text">1200 mm</text>
+    </g>
+    <g class="dim" transform="translate(-24,0)" marker-start="url(#arrow)" marker-end="url(#arrow)">
+      <path d="M0 0 V600"/>
+      <text x="-48" y="300" class="text" transform="rotate(-90 -48,300)">1500 mm</text>
+    </g>
+  </g>
+
+  <!-- Fragment B (Haut droite) -->
+  <g transform="translate(740,60)">
+    <rect class="line" x="0" y="0" width="400" height="300" rx="4"/>
+    <g class="thin">
+      <rect x="12" y="12" width="100" height="276"/>
+      <rect x="124" y="12" width="100" height="276"/>
+      <rect x="236" y="12" width="152" height="276"/>
+    </g>
+    <g class="dim" marker-start="url(#arrow)" marker-end="url(#arrow)">
+      <path d="M0 320 H400"/>
+      <text x="170" y="345" class="text">1600 mm</text>
+    </g>
+  </g>
+
+  <!-- Fragment C (Bas gauche) -->
+  <g transform="translate(60,740)">
+    <rect class="line" x="0" y="0" width="420" height="360" rx="4"/>
+    <g class="thin">
+      <rect x="12" y="12" width="126" height="336"/>
+      <rect x="150" y="12" width="126" height="336"/>
+      <rect x="288" y="12" width="120" height="336"/>
+    </g>
+    <g class="dim" marker-start="url(#arrow)" marker-end="url(#arrow)">
+      <path d="M0 384 H420"/>
+      <text x="170" y="410" class="text">900 mm</text>
+    </g>
+    <g class="dim" transform="translate(-30,0)" marker-start="url(#arrow)" marker-end="url(#arrow)">
+      <path d="M0 0 V360"/>
+      <text x="-52" y="180" class="text" transform="rotate(-90 -52,180)">2100 mm</text>
+    </g>
+  </g>
+
+  <!-- Fragment D (Bas droite) -->
+  <g transform="translate(740,740)">
+    <rect class="line" x="0" y="0" width="400" height="360" rx="4"/>
+    <rect class="thin" x="22" y="22" width="356" height="140"/>
+    <rect class="thin" x="22" y="184" width="356" height="140"/>
+    <g class="dim" marker-start="url(#arrow)" marker-end="url(#arrow)">
+      <path d="M0 384 H400"/>
+      <text x="170" y="410" class="text">1200 mm</text>
+    </g>
+  </g>
+
+  <!-- small detail cotes -->
+  <g class="thin" transform="translate(520,420)">
+    <path d="M0 0 H120" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+    <text x="36" y="-6" class="text">40 mm</text>
+  </g>
+
+  <!-- seam breaks -->
+  <g class="thin" opacity="0.12">
+    <path d="M0 1160 L120 1200"/>
+    <path d="M1200 40 L1080 160"/>
+  </g>
+</svg>

@@ -1,7 +1,10 @@
 // src/app/product-detail/[category]/[id]/page.js
+// import ProductDetailClient from './page-client';
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+// import { notFound } from 'next/navigation';
+// import PRODUCTS_DB from '@/data/products-db';
 
 // Base de données des produits EN ANGLAIS, synchronisée avec votre catalogue
 const PRODUCTS_DB = {
@@ -128,5 +131,9 @@ const ProductDetailPage = ({ params }) => {
     </section>
   );
 };
+
+// export default function ProductDetailPageWrapper() {
+//   return <ProductDetailClient />;
+// }
 
 export default ProductDetailPage;

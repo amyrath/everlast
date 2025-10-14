@@ -1,20 +1,15 @@
-// tailwind.config.js (VERSION FINALE CORRIGÉE)
+// tailwind.config.js (CONTENU FINAL ET COMPLET)
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    // 1. Scanner le dossier SRC de manière récursive
-    "./src/**/*.{js,ts,jsx,tsx,mdx}", 
-    
-    // 2. Scanner le dossier components à la racine
-    "./components/**/*.{js,ts,jsx,tsx,mdx}", 
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
-      colors: { 
-        'bleu-fonce': '#0A1931',
-        'rouge-action': '#D93025',
-        'bleu-vif': '#1A73E8',
-      },
+      // backgroundImage: {
+      //   'upvc-pattern': "url('images/upvc-pattern.svg')",
+      // },
       fontFamily: {
         'titre': ['var(--font-montserrat)', 'sans-serif'],
         'corps': ['var(--font-roboto)', 'sans-serif'],
@@ -22,4 +17,5 @@ module.exports = {
     },
   },
   plugins: [],
-}
+};
+
