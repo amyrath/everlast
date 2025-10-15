@@ -17,18 +17,27 @@ const HeroSection = () => {
   return (
     <section className="relative h-[90vh] flex items-center justify-center text-white overflow-hidden pt-28 md:pt-90">
       
-      {/* Image de Fond avec Parallaxe */}
-      <div 
+      <video
+        autoPlay
+        loop
+        muted
+        className="absolute inset-0 w-full h-full object-cover z-0"
+      >
+        {/* Assurez-vous que ce chemin mène bien à votre fichier vidéo (ex: .mp4) */}
+        <source src="/images/video.mp4" type="video/mp4" />
+        {/* Fallback si la vidéo ne charge pas */}
+        Your browser does not support the video tag.
+      </video>
+
+      {/* <div 
         className="absolute inset-0 bg-cover bg-center transition-transform duration-100" 
         style={{ 
           backgroundImage: "url('/images/hero-image.jpg')",
-          // Applique l'effet Parallaxe : l'image monte moins vite que le scroll
           transform: `translateY(${offsetY * 0.5}px)`, 
         }}
       >
-        {/* Calque Sombre pour le contraste du logo et du texte */}
         <div className="absolute inset-0 bg-bleu-fonce opacity-70"></div>
-      </div>
+      </div> */}
 
       {/* Contenu - centré au-dessus de l'overlay */}
       <div className="relative z-10 text-center px-4">
@@ -38,8 +47,8 @@ const HeroSection = () => {
         </h1>
         
         {/* H2 : police corps, avec accent rouge */}
-        <h2 className="text-xl md:text-2xl mb-8 animate-fade-in-up delay-200 text-red-800">
-          We'll change your <span className="text-rouge-action font-extrabold">OUTLOOK</span>
+        <h2 className="text-xl md:text-2xl mb-8 font-extrabold animate-fade-in-up delay-200 text-red-800">
+          We'll change your <span className="text-rouge-action justify-center font-extrabold text-4xl">OUTLOOK</span>
         </h2>
         
         {/* Bouton CTA : utilisez la couleur rouge-action définie */}
@@ -47,7 +56,7 @@ const HeroSection = () => {
           href="/contact" 
           className="inline-block px-10 py-4 bg-rouge-action font-bold rounded-lg shadow-2xl hover:bg-red-700 transition duration-300 animate-fade-in-up delay-400"
         >
-          ASK FOR A FREE QUOT
+          ASK FOR A FREE QUOTE
         </a>
       </div>
     </section>

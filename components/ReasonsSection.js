@@ -10,7 +10,7 @@ const reasonsData = [
     { id: 'sound', title: 'Sound Insulation', icon: 'VolumeX', detail: "Everlast Windows and Doors are fusion welded, lock at multiple points around the frame and are double sealed leading to excellent sound insulation. Double glazing is available on request which can offer the ultimate in sound and temperature insulation." },
     { id: 'water', title: 'Resistance to Water', icon: 'Droplet', detail: "Everlast Windows and Doors have a built in special rain drain mechanism." },
     { id: 'wind', title: 'Resistance to Wind', icon: 'Wind', detail: "Everlast Windows and Doors are multi chambered and reinforced with steel; it can withstand heavy wind loads." },
-    { id: 'aesthetics', title: 'Aesthetics', icon: 'Star', detail: "Everlast Windows and Doors have elegant looks, enhances both; the exteriors and interiors of the building." },
+    { id: 'aesthetics', title: 'Aesthetics', icon: 'Star', detail: "Everlast Windows and Doors have elegant looks, available in several colors, enhances both, the exteriors and interiors of the building." },
 ];
 // ------------------------------------------
 
@@ -24,14 +24,14 @@ const ReasonsSection = () => {
             <div className="container mx-auto px-4 max-w-7xl">
                 
                 {/* TITRE ORIGINAL RÉTABLI */}
-                <h2 className="font-titre text-4xl md:text-5xl font-extrabold text-center mb-16 text-blue-800">
+                <h2 className="font-titre text-4xl md:text-5xl font-extrabold text-center mb-16 text-blue-900">
                     5 Reasons For Choosing Everlast Windows & Doors
                 </h2>
 
                 <div className="flex flex-col lg:flex-row gap-12">
 
                     {/* COLONNE GAUCHE : Navigation */}
-                    <div className="lg:w-1/3 bg-blue-800 p-8 rounded-xl shadow-2xl text-white h-fit">
+                    <div className="lg:w-1/3 bg-blue-900 p-8 rounded-xl shadow-2xl text-white h-fit">
                         {reasonsData.map((reason) => {
                             const NavIcon = LucideIcons[reason.icon];
                             

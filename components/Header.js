@@ -8,7 +8,6 @@ const NAV_LINKS = [
     { name: 'Products', href: '/#products' }, 
     { name: 'Technical Info', href: '/#technical-details' },
     { name: 'About Us', href: '/about' },
-    { name: 'Careers', href: '/careers' },
 ];
 
 const Header = () => {

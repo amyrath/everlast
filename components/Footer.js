@@ -15,7 +15,6 @@ const footerLinks = {
         { name: 'About Us', href: '/about' },
         { name: '5 Reasons', href: '/#reasons' },
         { name: 'Technology', href: '/#technical-details' },
-        { name: 'Careers', href: '/careers' },
     ],
 };
 

@@ -7,10 +7,8 @@ const pillarsData = [
     { 
         title: "Beauty", 
         icon: "Feather",
-        // J'ai mis le titre dans la description pour que le contenu se centre mieux.
         description: "Elegant design that enhances interior and exterior aesthetics." 
     }, 
-    // ... (Le reste des données reste inchangé en termes de structure)
     { 
         title: "Practicality", 
         icon: "Wrench", 
@@ -36,7 +34,7 @@ const PillarsSection = () => {
                 {/* Titre de la section */}
                 {/* TAILLE AUGMENTÉE et centrée */}
                 <h2 className="text-4xl md:text-5xl font-titre font-extrabold text-blue-900 text-center mb-16">
-                    What do you look for when choosing a window or door?
+                    What do you look for when choosing a window or door ?
                 </h2>
 
                 {/* Grille des 4 Cartes */}
@@ -48,7 +46,7 @@ const PillarsSection = () => {
                         return (
                             <div 
                                 key={index} 
-                                // Ajout de 'text-center' ici
+                                // Ajout de 'text-center'
                                 className={`
                                     bg-white p-8 rounded-xl shadow-lg border-l-4 border-transparent text-center
                                     transition-all duration-300 ease-in-out cursor-pointer
@@ -66,7 +64,7 @@ const PillarsSection = () => {
                                 </h3>
                                 
                                 {/* Description : text-base pour la lisibilité */}
-                                <p className="font-corps text-gray-700 text-base">
+                                <p className="font-corps text-gray-700 text-xl">
                                     {pillar.description}
                                 </p>
                             </div>

@@ -12,9 +12,9 @@ const windowsData = [
 
 const doorsData = [
     { id: 5, name: 'Sliding Doors', description: 'Connect indoor and outdoor living seamlessly with wide, easy-to-use panels.', imageUrl: '/images/sliding-door.jpg', link: '/product-detail/doors/1' },
-    { id: 6, name: 'Tilt & Slide Doors', description: 'Combines tilt-in ventilation with full sliding functionality for patios and balconies.', imageUrl: '/images/tilt-and-slide-door.jpg', link: '/product-detail/doors/2' },
-    { id: 7, name: 'Turn Doors', description: 'Robust, elegant entrance solutions with high security and superior thermal performance.', imageUrl: '/images/turn-door.jpg', link: '/product-detail/doors/3' },
-];
+    { id: 6, name: 'Turn Doors', description: 'Robust, elegant entrance solutions with high security and superior thermal performance.', imageUrl: '/images/turn-door.jpg', link: '/product-detail/doors/3' },
+    { id: 7, name: 'Tilt & Slide Doors', description: 'Combines tilt-in ventilation with full sliding functionality for patios and balconies.', imageUrl: '/images/tilt-and-slide-door.jpg', link: '/product-detail/doors/2' },
+    ];
 
 // Composant de carte avec bouton centré et alignement vertical strict
 const ProductCard = ({ product }) => (
@@ -68,7 +68,7 @@ const ProductCatalog = () => {
                         <Image src="/images/windows-picture.jpg" alt="Everlast Windows Range" width={1200} height={450} className="w-full h-full object-cover" unoptimized={true} />
                     </div>
 
-                    <p className="mb-12 font-titre text-4xl font-bold text-blue-800 text-center mb-6">
+                    <p className="mb-12 font-titre text-4xl font-bold text-blue-900 text-center">
                         Everlast offers Four broad designs for Windows
                     </p>
                     <div className="text-center max-w-5xl mx-auto mb-16"> {/* MARGE AUGMENTÉE */}
@@ -93,7 +93,7 @@ const ProductCatalog = () => {
                         <Image src="/images/doors-picture.jpg" alt="Everlast Doors Range" width={1200} height={450} className="w-full h-full object-cover" unoptimized={true} />
                     </div>
 
-                    <p className="mb-12 font-titre text-4xl font-bold text-blue-800 text-center mb-6">
+                    <p className="mb-12 font-titre text-4xl font-bold text-blue-900 text-center">
                         Everlast offers Three broad designs of uPVC Doors
                     </p>
                     <div className="text-center max-w-5xl mx-auto mb-16"> {/* MARGE AUGMENTÉE */}
