@@ -24,7 +24,7 @@ const ProductIntroSection = () => {
                     
                     <div className="pt-6">
                         <a 
-                            href="/contact" 
+                            href="/customizer" 
                             className="inline-flex items-center px-10 py-4 border-2 border-red-700 text-red-700 font-bold text-xl rounded-lg transition duration-300 hover:bg-red-700 hover:text-white shadow-lg"
                         >
                             { /*<LucideIcons.Construction size={24} className="mr-3" />*/}

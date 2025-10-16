@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurateur 3D Everlast uPVC</title>
+    <!-- Chargement de Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chargement de la bibliothèque Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        /* Définition du corps pour prendre toute la hauteur */
+        html, body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden; /* Empêche les barres de défilement */
+            font-family: 'Inter', sans-serif;
+        }
+        /* Conteneur principal pour le canvas 3D */
+        #scene-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f0f4f8; /* Fond légèrement gris-bleu */
+        }
+        /* Style pour le panneau de contrôle coulissant */
+        #control-panel {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 95%;
+            max-width: 700px;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 16px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.1);
+            transition: bottom 0.5s ease-out;
+            z-index: 10;
+        }
+        /* Masque le panneau en mode sélection de produit */
+        .hidden-panel {
+            bottom: -200px !important;
+        }
+
+        /* Style pour les boutons de couleur */
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid transparent;
+            transition: border-color 0.2s;
+            margin: 4px;
+        }
+
+        .color-option.selected {
+            border-color: #ef4444; /* Rouge Tailwind 500 */
+            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.5);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Conteneur de la Scène 3D -->
+    <div id="scene-container"></div>
+
+    <!-- Interface utilisateur (Panneau de Contrôle) -->
+    <div id="control-panel" class="hidden-panel">
+        <h2 id="product-name" class="text-xl font-bold text-gray-800 mb-4 text-center"></h2>
+
+        <div id="config-options" class="flex flex-col space-y-4">
+            <!-- Options de Couleur -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Couleur du Cadre (Frame)</label>
+                <div id="frame-colors" class="flex justify-center">
+                    <!-- Les options de couleur seront injectées ici -->
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Couleur de la Jointure (Gasket)</label>
+                <div id="gasket-colors" class="flex justify-center">
+                    <!-- Les options de couleur seront injectées ici -->
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Couleur de la Vitre (Glass)</label>
+                <div id="glass-colors" class="flex justify-center">
+                    <!-- Les options de couleur seront injectées ici -->
+                </div>
+            </div>
+        </div>
+
+        <button id="back-to-selection" class="mt-6 w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition duration-300 shadow-md">
+            Retour à la Sélection des Produits
+        </button>
+    </div>
+
+    <!-- Overlay d'Instructions de Sélection -->
+    <div id="selection-overlay" class="absolute inset-0 bg-white bg-opacity-70 flex flex-col justify-center items-center p-4 transition duration-500 ease-in-out opacity-100 z-20">
+        <div class="bg-white p-6 rounded-xl shadow-2xl text-center max-w-lg">
+            <h1 class="text-3xl font-extrabold text-blue-900 mb-3">Configurateur 3D Everlast uPVC</h1>
+            <p class="text-gray-600 mb-6">
+                Cliquez sur un produit pour le placer au centre et commencer la personnalisation (couleur du cadre, des jointures et de la vitre).
+            </p>
+            <p class="text-sm text-red-500 font-medium">
+                Vous pouvez faire glisser votre souris pour faire pivoter la vue 3D.
+            </p>
+        </div>
+    </div>
+
+
+    <script>
+        // --- CONSTANTES ET INITIALISATION ---
+        const SCENE_CONTAINER = document.getElementById('scene-container');
+        const CONTROL_PANEL = document.getElementById('control-panel');
+        const SELECTION_OVERLAY = document.getElementById('selection-overlay');
+        const PRODUCT_NAME_ELEM = document.getElementById('product-name');
+        const FRAME_COLORS_CONTAINER = document.getElementById('frame-colors');
+        const GASKET_COLORS_CONTAINER = document.getElementById('gasket-colors');
+        const GLASS_COLORS_CONTAINER = document.getElementById('glass-colors');
+        const BACK_BUTTON = document.getElementById('back-to-selection');
+
+        let scene, camera, renderer, raycaster;
+        let INTERSECTED = null;
+        let mouse = new THREE.Vector2();
+        let isDragging = false;
+        let previousMousePosition = { x: 0, y: 0 };
+        let currentProductGroup = null; // Groupe 3D du produit actuellement en customisation
+
+        // Définition des couleurs et de leurs codes hexadécimaux (ajustez selon vos produits)
+        const COLORS = {
+            FRAME: [
+                { name: 'Blanc Classique', hex: 0xffffff },
+                { name: 'Gris Anthracite', hex: 0x36454f },
+                { name: 'Chêne Doré', hex: 0xcc9966 }
+            ],
+            GASKET: [
+                { name: 'Noir', hex: 0x000000 },
+                { name: 'Gris', hex: 0x808080 }
+            ],
+            GLASS: [
+                { name: 'Clair', hex: 0xadd8e6, opacity: 0.2 },
+                { name: 'Fumé', hex: 0x3d4453, opacity: 0.5 }
+            ]
+        };
+        
+        // États du configurateur
+        const STATE = {
+            SELECTION: 0,
+            CUSTOMIZATION: 1
+        };
+        let appState = STATE.SELECTION;
+
+
+        // Définition des produits avec leurs positions initiales
+        const PRODUCTS = [
+            { id: 1, name: "Sliding Window", modelType: "WINDOW", position: new THREE.Vector3(-4, 0, -4) },
+            { id: 2, name: "Casement Window", modelType: "WINDOW", position: new THREE.Vector3(4, 0, -4) },
+            { id: 3, name: "Fixed Window", modelType: "WINDOW", position: new THREE.Vector3(-6, 0, 0) },
+            { id: 4, name: "Sliding Door", modelType: "DOOR", position: new THREE.Vector3(6, 0, 0) },
+            { id: 5, name: "Turn Door", modelType: "DOOR", position: new THREE.Vector3(-4, 0, 4) },
+            { id: 6, name: "Tilt & Slide Door", modelType: "DOOR", position: new THREE.Vector3(4, 0, 4) }
+        ];
+
+        // --- FONCTIONS DE MODÉLISATION 3D ---
+
+        // Fonction utilitaire pour créer un cube
+        function createBox(w, h, d, color, name, isTransparent = false, opacity = 1) {
+            const material = new THREE.MeshPhongMaterial({ 
+                color: color, 
+                transparent: isTransparent, 
+                opacity: opacity, 
+                shininess: 30 
+            });
+            const geometry = new THREE.BoxGeometry(w, h, d);
+            const mesh = new THREE.Mesh(geometry, material);
+            mesh.userData.name = name;
+            return mesh;
+        }
+
+        // Création d'un modèle simplifié de Fenêtre (pour la démo)
+        function createSimpleWindow(productName) {
+            const group = new THREE.Group();
+            group.userData.productName = productName;
+            group.userData.modelType = "WINDOW";
+
+            // 1. Cadre Principal (Frame)
+            const frameColor = COLORS.FRAME[0].hex; // Couleur de base
+            
+            // Profils extérieurs
+            group.add(createBox(0.2, 4, 0.2, frameColor, 'frame')); // Gauche
+            group.add(createBox(0.2, 4, 0.2, frameColor, 'frame')).position.x = 2.8; // Droite
+            group.add(createBox(3, 0.2, 0.2, frameColor, 'frame')).position.y = 2; // Haut
+            group.add(createBox(3, 0.2, 0.2, frameColor, 'frame')).position.y = -2; // Bas
+
+            // 2. Vitre (Glass)
+            const glass = createBox(2.8, 3.8, 0.05, COLORS.GLASS[0].hex, 'glass', true, COLORS.GLASS[0].opacity);
+            glass.position.set(1.4, 0, 0); // Positionné au centre du cadre
+            group.add(glass);
+
+            // 3. Jointure (Gasket - un mince bord noir autour de la vitre)
+            const gasketInner = createBox(2.7, 3.7, 0.1, COLORS.GASKET[0].hex, 'gasket');
+            gasketInner.position.set(1.4, 0, 0.05);
+            group.add(gasketInner);
+
+            // Centrer l'ensemble pour une manipulation facile
+            group.position.set(-1.4, 0, 0); 
+            group.scale.set(0.5, 0.5, 0.5); // Réduire la taille pour l'affichage initial
+            return group;
+        }
+
+        // Création d'un modèle simplifié de Porte (pour la démo)
+        function createSimpleDoor(productName) {
+            const group = new THREE.Group();
+            group.userData.productName = productName;
+            group.userData.modelType = "DOOR";
+
+            // 1. Cadre Principal (Frame)
+            const frameColor = COLORS.FRAME[1].hex; // Couleur de base
+            
+            // Profils extérieurs
+            group.add(createBox(0.2, 6, 0.2, frameColor, 'frame')); // Gauche
+            group.add(createBox(0.2, 6, 0.2, frameColor, 'frame')).position.x = 3.8; // Droite
+            group.add(createBox(4, 0.2, 0.2, frameColor, 'frame')).position.y = 3; // Haut
+            group.add(createBox(4, 0.2, 0.2, frameColor, 'frame')).position.y = -3; // Bas
+
+            // 2. Panneau central (Porte)
+            const doorPanel = createBox(3.8, 5.8, 0.05, COLORS.GLASS[1].hex, 'glass', true, COLORS.GLASS[1].opacity);
+            doorPanel.position.set(1.9, 0, 0); 
+            group.add(doorPanel);
+
+             // 3. Jointure (Gasket)
+            const gasketInner = createBox(3.7, 5.7, 0.1, COLORS.GASKET[1].hex, 'gasket');
+            gasketInner.position.set(1.9, 0, 0.05);
+            group.add(gasketInner);
+
+            // Centrer et réduire
+            group.position.set(-1.9, 0, 0); 
+            group.scale.set(0.5, 0.5, 0.5);
+            return group;
+        }
+
+
+        // --- INITIALISATION DE LA SCÈNE ---
+
+        function init() {
+            // SCENE
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xf0f4f8); // Couleur de fond du conteneur
+
+            // CAMERA
+            const aspect = window.innerWidth / window.innerHeight;
+            camera = new THREE.PerspectiveCamera(50, aspect, 0.1, 1000);
+            camera.position.set(0, 5, 10);
+            camera.lookAt(0, 0, 0);
+
+            // RENDERER
+            renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.shadowMap.enabled = true;
+            SCENE_CONTAINER.appendChild(renderer.domElement);
+
+            // ÉCLAIRAGE
+            const ambientLight = new THREE.AmbientLight(0x404040, 5); // Lumière douce
+            scene.add(ambientLight);
+
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 5); // Lumière directionnelle principale
+            directionalLight.position.set(5, 10, 7.5);
+            directionalLight.castShadow = true;
+            directionalLight.shadow.mapSize.width = 1024;
+            directionalLight.shadow.mapSize.height = 1024;
+            directionalLight.shadow.camera.near = 0.5;
+            directionalLight.shadow.camera.far = 50;
+            scene.add(directionalLight);
+
+            // SOL
+            const planeGeometry = new THREE.PlaneGeometry(100, 100);
+            const planeMaterial = new THREE.MeshPhongMaterial({ color: 0xcccccc, side: THREE.DoubleSide });
+            const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+            plane.rotation.x = Math.PI / 2;
+            plane.position.y = -2;
+            plane.receiveShadow = true;
+            scene.add(plane);
+
+            // RAYCASTER (pour la sélection)
+            raycaster = new THREE.Raycaster();
+
+            // CHARGEMENT DES PRODUITS
+            loadProducts();
+
+            // GESTION DES ÉVÉNEMENTS
+            window.addEventListener('resize', onWindowResize, false);
+            SCENE_CONTAINER.addEventListener('mousemove', onMouseMove, false);
+            SCENE_CONTAINER.addEventListener('click', onMouseClick, false);
+            SCENE_CONTAINER.addEventListener('mousedown', onMouseDown, false);
+            SCENE_CONTAINER.addEventListener('mouseup', onMouseUp, false);
+        }
+
+        // --- LOGIQUE D'ÉTAT ET D'AFFICHAGE ---
+
+        // Charge et positionne tous les modèles pour la phase de sélection
+        function loadProducts() {
+            // Créer un groupe parent pour tous les produits de la sélection
+            scene.userData.selectionGroup = new THREE.Group();
+            scene.add(scene.userData.selectionGroup);
+
+            PRODUCTS.forEach(productData => {
+                let model;
+                if (productData.modelType === "WINDOW") {
+                    model = createSimpleWindow(productData.name);
+                } else {
+                    model = createSimpleDoor(productData.name);
+                }
+                
+                model.position.copy(productData.position);
+                model.userData.id = productData.id;
+                model.userData.productName = productData.name;
+                
+                scene.userData.selectionGroup.add(model);
+                
+                // Ajouter le nom du produit en 3D
+                addProductLabel(model, productData.name);
+            });
+        }
+        
+        // Ajoute un label 3D au-dessus du produit
+        function addProductLabel(model, text) {
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+            const fontSize = 150;
+            context.font = `${fontSize}px Arial`;
+            const metrics = context.measureText(text);
+            const textWidth = metrics.width;
+            
+            canvas.width = textWidth + 10;
+            canvas.height = fontSize + 10;
+            context.font = `${fontSize}px Arial`;
+            context.fillStyle = 'rgba(255, 255, 255, 0)'; // Transparent
+            context.fillRect(0, 0, canvas.width, canvas.height);
+            context.fillStyle = '#1e3a8a'; // Texte bleu foncé
+            context.fillText(text, 5, fontSize - 5);
+
+            const texture = new THREE.CanvasTexture(canvas);
+            texture.needsUpdate = true;
+
+            const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
+            const sprite = new THREE.Sprite(material);
+
+            // Taille du sprite dans la scène 3D
+            sprite.scale.set(textWidth / 100, fontSize / 100, 1);
+            
+            // Positionnement au-dessus du modèle
+            sprite.position.y = 3; 
+            sprite.position.x = model.position.x;
+            sprite.position.z = model.position.z;
+
+            // Stocker le sprite dans les userData pour le masquer/afficher
+            model.userData.label = sprite;
+            scene.userData.selectionGroup.add(sprite);
+        }
+
+        // Bascule l'application en mode customisation
+        function startCustomization(selectedModel) {
+            appState = STATE.CUSTOMIZATION;
+            currentProductGroup = selectedModel;
+
+            // Masquer les autres produits et les labels
+            scene.userData.selectionGroup.visible = false;
+            SELECTION_OVERLAY.style.opacity = 0;
+            SELECTION_OVERLAY.style.pointerEvents = 'none';
+
+            // Positionner le produit sélectionné au centre de la scène
+            currentProductGroup.position.set(0, 0, 0);
+            currentProductGroup.scale.set(1.5, 1.5, 1.5); // Agrandir
+            scene.add(currentProductGroup);
+            
+            // Mettre à jour l'UI
+            PRODUCT_NAME_ELEM.textContent = selectedModel.userData.productName;
+            CONTROL_PANEL.classList.remove('hidden-panel');
+
+            // Initialiser les options de couleur
+            initializeColorOptions();
+        }
+
+        // Bascule l'application en mode sélection
+        function endCustomization() {
+            appState = STATE.SELECTION;
+            
+            // Remettre le produit customisé dans le groupe de sélection et réinitialiser sa position/taille
+            scene.remove(currentProductGroup);
+            currentProductGroup.scale.set(0.5, 0.5, 0.5);
+            const originalData = PRODUCTS.find(p => p.id === currentProductGroup.userData.id);
+            currentProductGroup.position.copy(originalData.position);
+            scene.userData.selectionGroup.add(currentProductGroup);
+            
+            // Afficher tous les produits et l'overlay
+            scene.userData.selectionGroup.visible = true;
+            SELECTION_OVERLAY.style.opacity = 1;
+            SELECTION_OVERLAY.style.pointerEvents = 'auto';
+            CONTROL_PANEL.classList.add('hidden-panel');
+            currentProductGroup = null; // Réinitialiser
+        }
+
+        // --- GESTION DES COULEURS ET DE L'UI ---
+
+        function initializeColorOptions() {
+            FRAME_COLORS_CONTAINER.innerHTML = '';
+            GASKET_COLORS_CONTAINER.innerHTML = '';
+            GLASS_COLORS_CONTAINER.innerHTML = '';
+
+            // Cadre
+            COLORS.FRAME.forEach(color => createColorButton(color, 'FRAME', FRAME_COLORS_CONTAINER));
+            // Jointure
+            COLORS.GASKET.forEach(color => createColorButton(color, 'GASKET', GASKET_COLORS_CONTAINER));
+            // Vitre
+            COLORS.GLASS.forEach(color => createColorButton(color, 'GLASS', GLASS_COLORS_CONTAINER));
+        }
+
+        function createColorButton(color, partType, container) {
+            const button = document.createElement('div');
+            button.className = 'color-option shadow-md';
+            button.style.backgroundColor = `#${color.hex.toString(16).padStart(6, '0')}`;
+            button.title = color.name;
+            button.dataset.hex = color.hex;
+            button.dataset.name = color.name;
+            button.dataset.partType = partType;
+            
+            // Définir la couleur initiale sélectionnée (pour la démo, on prend toujours la première)
+            if (color.name === COLORS[partType][0].name) {
+                button.classList.add('selected');
+            }
+
+            button.addEventListener('click', () => changeProductColor(button, partType, color));
+            container.appendChild(button);
+        }
+
+        function changeProductColor(clickedButton, partType, colorData) {
+            // Désélectionner tous les autres boutons de la même catégorie
+            const container = clickedButton.parentNode;
+            container.querySelectorAll('.color-option').forEach(btn => btn.classList.remove('selected'));
+            clickedButton.classList.add('selected');
+
+            if (!currentProductGroup) return;
+
+            // Parcourir tous les enfants du modèle (frame, gasket, glass)
+            currentProductGroup.traverse(child => {
+                if (child.isMesh && child.userData.name === partType.toLowerCase()) {
+                    if (partType === 'GLASS') {
+                        // Pour la vitre, on change la couleur et l'opacité
+                        child.material.color.set(colorData.hex);
+                        child.material.opacity = colorData.opacity;
+                        child.material.needsUpdate = true;
+                    } else {
+                        // Pour les autres parties, seulement la couleur
+                        child.material.color.set(colorData.hex);
+                        child.material.needsUpdate = true;
+                    }
+                }
+            });
+        }
+
+
+        // --- GESTION DES ÉVÉNEMENTS 3D (SOURIS) ---
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function onMouseMove(event) {
+            // Calcul des coordonnées de la souris normalisées (-1 à +1)
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+            if (appState === STATE.CUSTOMIZATION && isDragging) {
+                // ROTATION du produit en mode CUSTOMIZATION
+                const deltaX = event.clientX - previousMousePosition.x;
+                const deltaY = event.clientY - previousMousePosition.y;
+
+                // Rotation autour de l'axe Y (mouvement horizontal)
+                currentProductGroup.rotation.y += deltaX * 0.005;
+                // Rotation autour de l'axe X (mouvement vertical, limité)
+                currentProductGroup.rotation.x += deltaY * 0.005;
+
+                previousMousePosition = { x: event.clientX, y: event.clientY };
+            } else if (appState === STATE.SELECTION) {
+                // Survol des produits en mode SELECTION
+                raycaster.setFromCamera(mouse, camera);
+                const intersects = raycaster.intersectObjects(scene.userData.selectionGroup.children, true);
+
+                if (intersects.length > 0) {
+                    let closestObject = intersects[0].object;
+                    // Trouver le groupe parent du produit
+                    while (closestObject.parent && closestObject.parent.userData.productName === undefined) {
+                        closestObject = closestObject.parent;
+                    }
+                    
+                    if (INTERSECTED != closestObject && closestObject.userData.productName) {
+                        if (INTERSECTED) {
+                            INTERSECTED.traverse(child => {
+                                if (child.isMesh) child.material.emissive.setHex(0x000000);
+                            });
+                        }
+                        
+                        INTERSECTED = closestObject;
+                        // Mettre en évidence (emissive light)
+                        INTERSECTED.traverse(child => {
+                            if (child.isMesh) child.material.emissive.setHex(0x101010);
+                        });
+
+                        SCENE_CONTAINER.style.cursor = 'pointer';
+                    }
+                } else {
+                    if (INTERSECTED) {
+                        INTERSECTED.traverse(child => {
+                            if (child.isMesh) child.material.emissive.setHex(0x000000);
+                        });
+                    }
+                    INTERSECTED = null;
+                    SCENE_CONTAINER.style.cursor = 'default';
+                }
+            }
+        }
+
+        function onMouseClick() {
+            if (appState === STATE.SELECTION && INTERSECTED) {
+                // Un produit a été sélectionné, lancer la customisation
+                startCustomization(INTERSECTED);
+            }
+        }
+
+        function onMouseDown(event) {
+            if (appState === STATE.CUSTOMIZATION) {
+                isDragging = true;
+                previousMousePosition = { x: event.clientX, y: event.clientY };
+                SCENE_CONTAINER.style.cursor = 'grabbing';
+            }
+        }
+
+        function onMouseUp() {
+            isDragging = false;
+            SCENE_CONTAINER.style.cursor = (appState === STATE.CUSTOMIZATION) ? 'grab' : 'default';
+        }
+
+        // --- BOUCLE D'ANIMATION ---
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (appState === STATE.SELECTION) {
+                // Rotation lente de la grille de produits
+                scene.userData.selectionGroup.rotation.y += 0.001; 
+            } else {
+                // En mode customisation, garder la caméra fixe, la rotation est gérée par la souris
+            }
+            
+            renderer.render(scene, camera);
+        }
+
+        // --- GESTION DU BOUTON DE RETOUR ---
+        BACK_BUTTON.addEventListener('click', endCustomization);
+
+
+        // --- DÉMARRAGE DE L'APPLICATION ---
+        window.onload = function() {
+            init();
+            animate();
+        };
+
+    </script>
+</body>
+</html>
