@@ -35,12 +35,13 @@ const PRODUCTS_DB = {
             specs: [
                 "uPVC 5-Chamber Profile", 
                 "Smooth Sliding Movement", // Remplacement de 'Smooth Gliding System'
-                "Easy Maintenance", 
-                "Key Available",
+                "Easy Maintenance",
                 "High Wind Resistance", 
                 "Minimum 4-Point Locking System", // Ajout de la sécurité
                 "Available in 2 to 4 Sashes Configurations", // Ajout des configurations
-                ...generalSpecs
+                "Optional Tinted Glass in multiple shades",
+                "Wide selection of Frame Colours",
+                "Available with Mosquito Net Screen"
             ],
         },
         2: {
@@ -50,14 +51,14 @@ const PRODUCTS_DB = {
             // Spécifications de Casement Windows mises à jour
             specs: [
                 "uPVC 7-Chamber Profile", 
-                "Minimum 6-Point Multi-Lock System", // Remplacement de 'Multi-Point Security Lock'
-                "Dual Opening: Inward & Outward Swing (90° & 180°)", // Remplacement et amélioration des types d'ouverture
+                "Minimum 6-Point Multi-Lock System with lock key", // Remplacement de 'Multi-Point Security Lock'
+                "Dual Opening: Inward or Outward Swing (90° & 180°)", // Remplacement et amélioration des types d'ouverture
                 "Optimized Natural Ventilation", // Remplacement de 'Maximum Ventilation'
-                "Energy-Efficient Design", 
-                "Key Available",
+                "Energy-Efficient Design",
                 "Optional Keyed Handle Security", // Ajout de l'option clé
                 "Easy-Clean Access (180° Opening for Exterior Cleaning)", // Ajout du nettoyage facile
                 "Available in Single, Double, and Multi-Sash options", // Ajout des configurations de châssis
+                "High Wind Resistance",
                 ...generalSpecs
             ],
         },
@@ -72,7 +73,7 @@ const PRODUCTS_DB = {
             name: "Everlast Asymmetrical Windows", 
             image: "/images/asymm.jpg", 
             description: "We custom-build unique shapes and sizes to meet specific architectural demands. Our asymmetrical designs ensure that even the most complex openings receive the perfect uPVC solution, combining unique aesthetics with Everlast's high performance.",
-            specs: ["Fully Customizable Shape/Size", "Steel Reinforcement", "Energy Efficiency Guaranteed", "Made-to-Order", ...generalSpecs],
+            specs: ["Fully Customizable Shape/Size", "Steel Reinforcement", "Energy Efficiency Guaranteed", "Made-to-Order", "Wide selection of Frame Colours", "Optional Tinted Glass in multiple shades", "High-Performance Sound Insulation"],
         },
     },
     doors: {
@@ -80,7 +81,7 @@ const PRODUCTS_DB = {
             name: "Everlast Sliding Doors", 
             image: "/images/sliding-door.jpg", 
             description: "Our Sliding Doors seamlessly connect your indoor and outdoor living spaces. They feature large glass panels for maximum view, secure multi-lock mechanisms, and a smooth glide system, making them both beautiful and highly functional.",
-            specs: ["Safety Toughened Glass", "Heavy-Duty Rail System", "Secure Multi-Lock", "Low Threshold option", "Key Available", "Excellent Weather Resistance", ...generalSpecs],
+            specs: ["Safety Toughened Glass", "Heavy-Duty Rail System", "Secure Multi-Lock", "Low Threshold option", "Key Available", "Excellent Weather Resistance","", ...generalSpecs],
         },
         2: {
             name: "Everlast Tilt & Slide Doors", 
@@ -95,12 +96,13 @@ const PRODUCTS_DB = {
             // Spécifications de Turn Doors mises à jour
             specs: [
                 "High Security Mechanism", 
-                "Excellent Thermal Insulation", 
-                "Durable uPVC Hinges", 
+                "Excellent Thermal Insulation",
                 "Main Entrance Compatible", 
                 "Reinforced Steel Frame", 
                 "Single and Double Door Configurations Available", // Remplacement de l'ancienne formulation
-                ...generalSpecs
+                "Wide selection of Frame Colours",
+                "Optional Tinted Glass in multiple shades",
+                "High-Performance Sound Insulation"
             ],
         }
     }

@@ -106,7 +106,7 @@ const TechnicalAdvantagesSection = () => {
                         <div className="bg-gray-50 p-8 rounded-xl shadow-lg border-l-8 border-red-700">
                             <h3 className="font-titre text-4xl font-extrabold text-red-700 mb-6 flex items-center">
                                 {/* Nouvelle icône : Gauge (Jauge/Calibre) pour représenter les tests de performance */}
-                                <LucideIcons.Gauge size={40} className="mr-4 text-blue-800" />
+                                <LucideIcons.ShieldCheck size={40} className="mr-4 text-blue-800" />
                                 Certified Advanced Testing
                             </h3>
                             <p className="font-corps text-2xl text-gray-700 leading-relaxed mb-4">
@@ -114,6 +114,11 @@ const TechnicalAdvantagesSection = () => {
                             </p>
                             <ul className="space-y-4">
                                 {/* Icône Wind pour le test de charge et Ajout du gras pour l'affichage du titre */}
+                                 <CheckListItem 
+                                    icon={LucideIcons.CogIcon} 
+                                    iconColor="text-blue-800" 
+                                    text="ISO :   9001 | 45001 | 14001" 
+                                />
                                 <CheckListItem 
                                     icon={LucideIcons.Wind} 
                                     iconColor="text-blue-800" 
